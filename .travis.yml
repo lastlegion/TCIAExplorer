@@ -7,3 +7,4 @@ python:
 branches:
   only:
     - master
+script: python tciaexplorer.py
