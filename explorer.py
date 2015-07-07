@@ -2,91 +2,90 @@ from tciaexplorer import TciaExplorer
 import os
 import json
 import requests
-api_key = os.getenv("TCIA_API_KEY")
-#print (api_key)
-tcia = TciaExplorer(api_key=api_key)
-#print(tcia.get_collection_values().content)
-#print(tcia.get_patient(collection="TCGA-GBM").content)
-#print(tcia.get_patient_study(patientID="TCGA-VP-A87C").content)
-#print(tcia.get_series(seriesInstanceUID="1.3.6.1.4.1.14519.5.2.1.7777.4006.246322038387835648676649859085"))
+import sys
 
-try:   
+api_key = os.getenv("TCIA_API_KEY")
+
+tcia = TciaExplorer(api_key=api_key) #set api_key
+
+def processInput(inhash, req):
+    key = input("Enter the Sno or "+str(req)+": ")
+    if key in inhash:
+        out = inhash[key]
+        return out
+    else:
+        print("Invalid "+str(req))
+        print("Try again")
+        processInput(inhash, req)
+
+def buildHash(attribute, data):
+    _hash = {}
+    print("Sno. \t"+attribute)
+    i=1
+    for row in data:
+        print(str(i) + "\t"+str(row[attribute]))
+        _hash[str(i)] = row[attribute]
+        _hash[row[attribute]] = row[attribute]
+        i+=1
+    return _hash
+
+######Fetch collections############
+try:
     collections = json.loads(tcia.get_collection_values().text)
-except requests.exceptions.RequestException as e:    
+except requests.exceptions.RequestException as e:
     print(e)
     sys.exit(1)
 
-i=1
-collectionHash = {}
-for c in collections:
-    print(str(i)+" "+ str(c["Collection"]))
-    collectionHash[i] = c["Collection"]
-    i+=1
-collection = input("Enter the collection: ")
-collection = (collectionHash[int(collection)])
+collectionHash = buildHash("Collection", collections)
+collection = processInput(collectionHash, "Collection")
+
 print ("Fetching patients for collection: "+ collection)
 
+############Fetch Patients#############
 try:
     patients = json.loads(tcia.get_patient(collection=collection).text)
-except requests.exceptions.RequestException as e:    
+except requests.exceptions.RequestException as e:
     print(e)
     sys.exit(1)
 
-i=1
-patientHash = {}
-for p in patients:
-    print(str(i)+" "+str(p["PatientName"]))
-    patientHash[i] = p["PatientName"]
-    i+=1
-patient = input("Enter the patient: ")
-patient = (patientHash[int(patient)])
-print (patient)
+patientHash = buildHash("PatientName", patients)
+patient = processInput(patientHash, "patient")
+print ("Fetching study for patientID: "+patient)
 
+
+###################Fetch study###############
 try:
     patientStudy  = json.loads(tcia.get_patient_study(patientID=patient).text)
-except requests.exceptions.RequestException as e:    
+except requests.exceptions.RequestException as e:
     print(e)
     sys.exit(1)
 
+patientStudyHash = buildHash("StudyInstanceUID", patientStudy)
+patientStudy = processInput(patientStudyHash, "studyInstanceUID")
+print("Fetching series for the studyInstanceUID: "+ patientStudy)
 
-patientStudyHash = {}
-i=1
-for p in patientStudy:
-    print(str(i) + " "+str(p["StudyInstanceUID"]))
-    patientStudyHash[i] = p["StudyInstanceUID"]
-    i+=1
-#print (patientStudyHash)
-patientStudy = input("Enter the study: ")
-patientStudy = (patientStudyHash[int(patientStudy)])
-print(patientStudy)
+##########Fetch series#############3
 
 try:
     patientSeries = json.loads(tcia.get_series(studyInstanceUID=patientStudy).text)
-except requests.exceptions.RequestException as e:    
+except requests.exceptions.RequestException as e:
     print(e)
     sys.exit(1)
 
-patientSeriesHash = {}
-i=1
+patientSeriesHash = buildHash("SeriesInstanceUID", patientSeries)
+patientSeries = processInput(patientSeriesHash, "seriesInstanceUID")
+print("Fetching images for the seriesInstanceUID: "+patientSeries)
 
-for p in patientSeries:
-    print(str(i) + " "+str(p["SeriesInstanceUID"]))
-    patientSeriesHash[i] = p["SeriesInstanceUID"]
-    i+=1
-patientSeries = input("Enter the series: ")
-patientSeries = patientSeriesHash[int(patientSeries)]
-print(patientSeries)
-
-
+##################Fetch images#############
 try:
     images = (tcia.get_image(seriesInstanceUID=patientSeries))
-except requests.exceptions.RequestException as e:    
+except requests.exceptions.RequestException as e:
     print(e)
     sys.exit(1)
 
-print(images)
+#print(images)
 fileName = input("Enter the filename to save: ")
-f = open(fileName, "wb")
+f = open(fileName+".zip", "wb")
 f.write(images.content)
 f.close()
 
