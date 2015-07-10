@@ -3,6 +3,8 @@ import json
 
 
 class TciaExplorer:
+    """Wrapper for TCIA's REST API"""
+
     GET_IMAGE = "getImage"
     GET_MANUFACTURER_VALUES = "getManufacturerValues"
     GET_MODALITY_VALUES = "getModalityValues"
@@ -23,30 +25,40 @@ class TciaExplorer:
         return req_params
 
     def get_collection_values(self, format="json"):
+        """Get a response object having collections in the response body"""
+
         params={"format":format, "api_key": self.api_key}
         payload = self.parse_params(params)
         response = requests.get(self.baseUrl+ self.GET_COLLECTION_VALUES, params=payload)
         return response
 
     def get_patient(self,collection=None, format="json"):
+        """Get a response object having patients in the response body.
+        """
+
         params = {"Collection":collection, "api_key": self.api_key, "format": format}
         payload = self.parse_params(params)
         response = requests.get(self.baseUrl+ self.GET_PATIENT, params=payload)
         return response
 
     def get_patient_study(self, patientID=None,collection=None,studyinstanceUID=None, format="json"):
+        """Get a response object having patient study in the response body"""
+
         params = {"Collection": collection, "PatientID": patientID, "StudyInstanceUID": studyinstanceUID, "api_key": self.api_key, "format":format}
         payload = self.parse_params(params)
         response = requests.get(self.baseUrl+ self.GET_PATIENT_STUDY , params=payload)
         return response
 
     def get_series(self, collection=None, studyInstanceUID=None, patientID=None,seriesInstanceUID = None, modality = None, bodyPartExamined = None, manufacturerModelName = None, manufacturer = None, format="json"):
+        """Get a response object having series in the response body"""
+
         params = {"Collection": collection, "StudyInstanceUID": studyInstanceUID, "SeriesInstanceUID": seriesInstanceUID, "Modality" :modality, "BodyPartExamined": bodyPartExamined, "ManufacturerModelName":manufacturerModelName, "Manufactuere": manufacturer, "api_key": self.api_key, "format": format}
         payload = self.parse_params(params)
         response  = requests.get(self.baseUrl+ self.GET_SERIES, params=payload)
         return response
 
     def get_image(self,seriesInstanceUID=None):
+        """Returns a zip file of the images"""
         params = {"SeriesInstanceUID": seriesInstanceUID, "api_key": self.api_key,format:"json"}
         payload=  self.parse_params(params)
         response = requests.get(self.baseUrl + self.GET_IMAGE, params=payload)
