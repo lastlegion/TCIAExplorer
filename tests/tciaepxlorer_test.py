@@ -1,5 +1,5 @@
 import unittest
-import tciaexplorer
+#import tciaexplorer
 from tciaexplorer import TciaExplorer
 import os
 import json
