@@ -1,6 +1,6 @@
 import unittest
 import tciaexplorer
-from tciaexplorer import *
+from tciaexplorer import TciaExplorer
 import os
 import json
 
