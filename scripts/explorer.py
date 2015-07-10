@@ -84,7 +84,7 @@ except requests.exceptions.RequestException as e:
     sys.exit(1)
 
 #print(images)
-fileName = input("Enter the filename to save: ")
+fileName = str(raw_input("Enter the filename to save: "))
 f = open(fileName+".zip", "wb")
 f.write(images.content)
 f.close()
