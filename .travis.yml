@@ -1,14 +1,14 @@
 language: python
 python:
-    - "2.6"
-    - "2.7"
-    - "3.3"
-    - "3.4"
-
+- '2.6'
+- '2.7'
+- '3.3'
+- '3.4'
 branches:
-    only:
-        - master
-#install: "pip install -r requirements.txt"
-script: 
-    - python setup.py install && python tests/tciaepxlorer_test.py
-
+  only:
+  - master
+script:
+- python setup.py install && python tests/tciaepxlorer_test.py
+env:
+  global:
+    secure: qGevD3YY0S/Kj+SlfdYf6yHc2AZJ9Yzlcn6h5+x8r/1gLAiKgd/25Bm5/sC5TTlU6eaAyl+NWvbvs0Y3lxUmQEdkzany1pwIR7Mr4Hnnl7bwfmA02iCBnWasDWsVCZLZrSbGzy5RQ0Ntjt/jDVp8Jbt3CtZ7HIASJwhenrL6FT4pAaRE1czdVNSOGVMNBoBVw7uCWWDfePsWpC+aineFaITXJ42S+LtdHTjvzr/2CBnOslVrt4MTEKyZF6CdC+8lkAMu6SFOLZuTjHtvwgp+b5mmGQidVOIR+IZ39X7ZebHNV2g5Vpq0S5/BaUkOysd0UeWqdHa/b3x1mvtJVZ4dJM0lDLkiFSjRWVBmVe8bpF/48zmeLWChmHQEzW4a5vl8OGJ2zEiFw84NVyJUrWtgrqogY6iFE7JCxMrSG9PyScgmm8j4C+LHRmtlDCxGSwgRQhKB7Wu7T7dY6HUVRcfF19nB92cL/P/2nOk0iPORYPTLnYc1mKBWSek7D1glLgzOE2ZV+5BSirHM9dE4jWp4CbnGt+IpfHhcAPOYY6wCjWUGdlmJ1+0Bfxuk56HFnsU1bJUw8DP9asbPfGF+GoJGxE+oYfqcIKlNKMQYQp53RRKbt6lqVjIJ0qrwDAFyLibpr4OBGP7vY4Z8SZsIu4mHugqvQ+G0YMoz1jVK193JZPU=
