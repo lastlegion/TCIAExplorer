@@ -9,7 +9,7 @@ api_key = os.getenv("TCIA_API_KEY")
 tcia = TciaExplorer(api_key=api_key) #set api_key
 
 def processInput(inhash, req):
-    key = input("Enter the Sno or "+str(req)+": ")
+    key = str(raw_input("Enter the Sno or "+str(req)+": "))
     if key in inhash:
         out = inhash[key]
         return out
@@ -49,7 +49,7 @@ except requests.exceptions.RequestException as e:
     sys.exit(1)
 
 patientHash = buildHash("PatientName", patients)
-patient = processInput(patientHash, "patient")
+patient = processInput(patientHash, "PatientID")
 print ("Fetching study for patientID: "+patient)
 
 
