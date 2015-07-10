@@ -5,6 +5,7 @@ setup(name='tciaexplorer',
         packages=['tciaexplorer'],
         author='Ganesh Iyer',
         install_requires=[
+            'setuptools',
             'requests',
             'pyopenssl',
             'ndg-httpsclient',
