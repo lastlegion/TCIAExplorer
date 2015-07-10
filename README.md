@@ -1,4 +1,6 @@
-# TCIAExplorer
+# TCIAExplorer 
+[![Build Status](https://travis-ci.org/lastlegion/TCIAExplorer.svg?branch=master)](https://travis-ci.org/lastlegion/TCIAExplorer)
+
 Easy to use Python wrapper around TCIA's REST API.
 
 ### Installation
