@@ -1,7 +1,8 @@
 import unittest
-from tciaexplorer import TciaExplorer
+from tciaexplorer import *
 import os
 import json
+
 class TciaExplorerTest(unittest.TestCase):
 
     def setUp(self):
