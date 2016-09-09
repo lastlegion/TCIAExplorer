@@ -1,1 +1,1 @@
-from tciaexplorer import TciaExplorer
+from .tciaexplorer import TciaExplorer
